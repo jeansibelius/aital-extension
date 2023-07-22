@@ -13,6 +13,10 @@
   "icons": {
     "128": "icon.png"
   },
+  "action": {
+    "default_popup": "popup/aital_popup.html"
+  },
+  "permissions": ["storage", "activeTab"],
   "browser_specific_settings": {
     "gecko": {
       "id": "aital@seanmcp.com"

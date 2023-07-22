@@ -19,6 +19,19 @@ document.body.appendChild(details);
 
 window.__aitalDebugMode = false;
 
+function onGot(item) {
+  let [x, y] = [50, 10];
+  if (item.aitalPosition) {
+    x = item.aitalPosition.x;
+    y = item.aitalPosition.y;
+  }
+  details.style.left = `${x}%`;
+  details.style.top = `${y}%`;
+}
+
+const getting = browser.storage.sync.get("aitalPosition");
+getting.then(onGot, (e) => console.error("AITAL error: could not get position from storage"));
+
 const tally = {
   __seconds: 0,
 };
