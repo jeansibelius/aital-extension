@@ -1,4 +1,4 @@
-function savePosition(e) {
+async function savePosition(e) {
   if (!e.target.id === "xPosition" || !e.target.id === "yPosition") {
     // Ignore when click is not on a button within <div id="popup-content">.
     return;
@@ -6,15 +6,19 @@ function savePosition(e) {
 
   const x = parseInt(document.getElementById("xPosition").value);
   const y = parseInt(document.getElementById("yPosition").value);
-  const res = browser.storage.sync.set({
-    aitalPosition: {x, y},
+  const aitalPosition = { x, y };
+  browser.storage.sync.set({
+    aitalPosition,
   });
-  res.then((re) => console.log(re));
+  const activeTabs = await browser.tabs.query({ active: true, currentWindow: true });
+  await browser.tabs.sendMessage(activeTabs[0].id, {
+    command: "aitalUpdatePosition",
+    aitalPosition,
+  });
 }
 
 function restoreOptions() {
   function setCurrentChoice(result) {
-    console.log("result", result);
     let [x, y] = [50, 10];
     if (result.aitalPosition) {
       x = result.aitalPosition.x;
